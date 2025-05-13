@@ -15,6 +15,10 @@ UPDATE people
 SET deathdate = NULL
 WHERE deathdate = '';
 
+SELECT *
+FROM people
+LIMIT 10;
+
 -- Count the number of records in the people table
 SELECT COUNT(*) AS count_records
 FROM people;
