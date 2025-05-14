@@ -17,3 +17,8 @@ LIMIT 10;
 SELECT COUNT(*) AS films_over_100K_votes
 FROM reviews
 WHERE num_votes >= 100000;
+
+-- Round the average number of facebook_likes to one decimal place
+SELECT ROUND(AVG(facebook_likes), 1) AS avg_facebook_likes
+FROM reviews;
+
