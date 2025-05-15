@@ -1,0 +1,58 @@
+# Operating System files
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# IDE and Editor specific files
+.vscode/
+.idea/
+*.code-workspace
+
+# Python specific files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.Python
+*.egg-info/
+pip-wheel-metadata/
+
+# Virtual environments
+venv/
+env/
+.venv/
+.env/ # Also common for environment variable files, see below
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# Sensitive information / Environment variables
+# It's crucial to ignore files containing passwords, API keys, etc.
+# Common names for such files:
+.env
+*.env
+secrets.ini
+config.local.ini
+credentials.json
+# If you have specific files for database credentials, add them here.
+# For example:
+# db_credentials.txt
+
+# Large data files that shouldn't be in version control
+# (Uncomment and specify if you have them)
+# *.csv
+# *.xlsx
+# *.xls
+# *.sqlite
+# *.db
+# data/large_dataset.csv
+# data/my_database_backup.sql
+
+# DBeaver specific (usually workspace related, not in project, but if you save project files):
+# .dbeaver/
+# .dbeaver-data-sources.xml  (If you store project-specific data source configs here and they have sensitive info)
+
+# Temporary files
+*.tmp
+*.bak
+*~
