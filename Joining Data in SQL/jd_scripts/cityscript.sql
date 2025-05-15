@@ -48,3 +48,30 @@ FROM countries AS c
 INNER JOIN languages AS l
 -- Match using the code column
 USING(code);
+
+-- Select country (aliased) from countries
+SELECT 
+   country_name  as country
+FROM countries;
+
+-- Select country and language names (aliased)
+SELECT 
+   c.country_name  AS country, 
+   l.name AS language
+-- From countries (aliased)
+FROM countries AS c
+-- Join to languages (aliased)
+INNER JOIN languages AS l
+-- Use code as the joining field with the USING keyword
+USING(code);
+
+-- Select country and language name (aliased)
+SELECT c.country_name  AS country, l.name AS language
+-- From countries (aliased)
+FROM countries AS c
+-- Join to languages (aliased)
+INNER JOIN languages AS l
+-- Use code as the joining field with the USING keyword
+USING(code)
+-- Filter for the Bhojpuri language
+WHERE l.name = 'Bhojpuri';
