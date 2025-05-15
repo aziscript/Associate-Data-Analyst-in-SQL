@@ -22,7 +22,3 @@ WHERE inter_dom = 'Inter'
 GROUP BY stay
 ORDER BY stay DESC
 LIMIT 9;
-
-
-
-
