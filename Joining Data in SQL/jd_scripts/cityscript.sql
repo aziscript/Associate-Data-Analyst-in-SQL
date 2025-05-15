@@ -75,3 +75,35 @@ INNER JOIN languages AS l
 USING(code)
 -- Filter for the Bhojpuri language
 WHERE l.name = 'Bhojpuri';
+
+
+-- What's the relationship between fertility and unemployment rates?
+-- Select relevant fields
+SELECT 
+   c.country_name, 
+   p.fertility_rate
+FROM countries AS c
+-- Inner join countries and populations, aliased, on code
+INNER JOIN populations AS p
+ON c.code = p.country_code;
+
+-- Select fields
+SELECT country_name, e.year, fertility_rate, e.unemployment_rate
+FROM countries AS c
+INNER JOIN populations AS p
+ON c.code = p.country_code
+-- Join to economies (as e)
+INNER JOIN economies AS e
+-- Match on country code
+USING(code);
+
+
+
+SELECT country_name, e.year, fertility_rate, unemployment_rate
+FROM countries AS c
+INNER JOIN populations AS p
+ON c.code = p.country_code
+INNER JOIN economies AS e
+ON c.code = e.code
+-- Add an additional joining condition such that you are also joining on year
+	AND e.year = p.year;
