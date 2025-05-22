@@ -24,7 +24,7 @@ env/
 .env/ # Also common for environment variable files, see below
 
 # Jupyter Notebook checkpoints
-.ipynb_checkpoints/
+**/.ipynb_checkpoints/
 
 # Sensitive information / Environment variables
 # It's crucial to ignore files containing passwords, API keys, etc.
