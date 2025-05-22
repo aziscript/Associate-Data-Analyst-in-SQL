@@ -1,11 +1,11 @@
 CREATE TABLE IF NOT EXISTS public.films (
     id BIGINT,
-    title VARCHAR(255),
+    title VARCHAR(300),
     release_year INT,
     country VARCHAR(100),
     duration INT,
     "language" VARCHAR(100),
-    certification VARCHAR(50),
+    certification VARCHAR(100),
     gross BIGINT,
     budget BIGINT
 );
@@ -285,3 +285,19 @@ HAVING AVG(budget) > 60000000
 -- Order the results from highest to lowest average gross and limit to one
 ORDER BY avg_gross DESC
 LIMIT 1;
+
+
+
+-- Challenge
+-- Calculate a count of all movies by country using the films table.
+SELECT country,
+       COUNT(*) AS movie_count
+FROM films f
+GROUP BY f.country
+ORDER BY movie_count DESC;
+
+-- Select all titles from Germany released after 2010 from the films table.
+SELECT title, release_year, country 
+FROM films f 
+WHERE release_year > 2010 
+   AND country = 'Germany';
