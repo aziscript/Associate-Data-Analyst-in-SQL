@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS public.films (
+CREATE TABLE IF NOT EXISTS intermediat_sql.films (
     id BIGINT,
     title VARCHAR(300),
     release_year INT,
@@ -10,18 +10,14 @@ CREATE TABLE IF NOT EXISTS public.films (
     budget BIGINT
 );
 
+CREATE TABLE IF NOT EXISTS intermediat_sql.descriptions (
+    description VARCHAR(512),
+    length INT,
+    rating VARCHAR(10)
+);
 
 SELECT *
-FROM public.films
-WHERE TRIM(country) = '' OR TRIM("language") = '';
-
-UPDATE public.films
-SET country = NULL
-WHERE TRIM(country) = '';
-
-UPDATE public.films
-SET "language" = NULL
-WHERE TRIM("language") = '';
+FROM descriptions d;
 
 SELECT *
 FROM films
@@ -301,3 +297,12 @@ SELECT title, release_year, country
 FROM films f 
 WHERE release_year > 2010 
    AND country = 'Germany';
+
+
+
+
+
+-- Rewrite this query
+SELECT person_id, role 
+FROM roles 
+LIMIT 10;

@@ -68,4 +68,3 @@ FROM reviews r,
      FROM films f) AS sub
 WHERE r.film_id = sub.id
 ORDER BY r.imbd_score DESC;
-

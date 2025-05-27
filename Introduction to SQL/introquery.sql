@@ -1,3 +1,14 @@
+DROP TABLE IF EXISTS intro_sql.books;
+
+CREATE TABLE intro_sql.books (
+    id BIGINT,
+    title VARCHAR(512),
+    author VARCHAR(200),
+    year INT,
+    genre VARCHAR(100)
+);
+
+
 -- Return all titles from the books table
 SELECT title
 FROM books;
@@ -22,6 +33,8 @@ FROM books;
 SELECT DISTINCT author as unique_author
 FROM books;
 
+DROP VIEW IF EXISTS library_authors;
+
 -- Create a view called library_authors
 CREATE VIEW library_authors AS
 SELECT DISTINCT author AS unique_author
@@ -35,3 +48,5 @@ FROM library_authors;
 SELECT genre
 FROM books
 LIMIT 10;
+
+
