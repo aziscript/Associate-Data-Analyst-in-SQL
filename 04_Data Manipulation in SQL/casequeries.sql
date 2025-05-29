@@ -520,6 +520,199 @@ ON c.id = outer_s.country_id
 GROUP BY country;
 
 
+-- Breakdown
+SELECT m.country_id,
+       m.id
+FROM "match" m 
+WHERE (m.home_goal + m.away_goal) >= 10;
+
+SELECT *
+FROM league l;
+
+SELECT l."name" AS league,
+       COUNT(sub.id) AS matches
+FROM league l 
+LEFT JOIN (
+       SELECT m.country_id,
+              m.id,
+              m.home_goal,
+              m.away_goal
+       FROM "match" m
+       WHERE (m.home_goal + m.away_goal) >= 10
+) AS sub
+ON l.id = sub.country_id
+GROUP BY league
+ORDER BY matches DESC;
+
+
+                
+-- Count the Number of matches in each leauge where goal is >= 10
+-- Set up your CTE
+WITH match_list AS (
+    SELECT 
+  		country_id, 
+  		id
+    FROM "match" m 
+    WHERE (home_goal + away_goal) >= 10)
+-- Select league and count of matches from the CTE
+SELECT
+    l.name AS league,
+    COUNT(match_list.id) AS matches
+FROM league AS l
+-- Join the CTE to the league table
+LEFT JOIN match_list ON l.id = match_list.country_id
+GROUP BY l.name;
+
+
+SELECT l."name" AS leauge,
+       m."date",
+       m.home_goal,
+       m.away_goal,
+       (m.home_goal + m.away_goal) AS total_goals
+FROM "match" m 
+LEFT JOIN league l 
+ON m.country_id  = l.id;
+
+
+-- Organizing with CTEs
+WITH match_list AS (
+        SELECT l."name" AS league,
+               m."date",
+               m.home_goal,
+               m.away_goal,
+               (m.home_goal + m.away_goal) AS total_goals
+        FROM "match" m 
+        LEFT JOIN league l 
+        ON m.country_id = l.id
+)
+SELECT league,
+       date,
+       home_goal,
+       away_goal 
+FROM match_list 
+WHERE total_goals >= 10;
+
+-- CTEs with nested subqueries
+-- Declare a CTE that calculates the total goals from matches in August of the 2013/2014 season.
+WITH match_list AS (
+        SELECT m.country_id,
+               (m.home_goal + m.away_goal) AS goals
+        FROM "match" m 
+        WHERE m.id IN (
+              SELECT m2.id
+              FROM "match" m2 
+              WHERE m2.season = '2013/2014'
+                AND EXTRACT(MONTH FROM date::date) = 08
+        )
+)
+SELECT l."name",
+       ROUND(AVG(match_list.goals), 2)
+FROM league l 
+LEFT JOIN match_list 
+ON l.id = match_list.country_id
+GROUP BY l."name";
+
+
+
+
+
+
+-- Perform this excercise using subqueries, correlated subqueries, and CTEs.
+-- 1. Get team names with a subquery
+-- home teams
+SELECT m.id,
+       t.team_long_name AS hometeam
+FROM "match" m 
+LEFT JOIN team t 
+ON m.hometeam_id = t.team_api_id;
+
+-- away teams
+SELECT m.id,
+       t.team_long_name AS awayteam
+FROM "match" m 
+LEFT JOIN team t 
+ON m.awayteam_id = t.team_api_id;
+
+
+SELECT m.date,
+       hometeam,
+       awayteam,
+       m.home_goal,
+       m.away_goal
+FROM "match" m 
+-- join hometeam
+LEFT JOIN (
+    SELECT m.id,
+       t.team_long_name AS hometeam
+    FROM "match" m 
+    LEFT JOIN team t 
+    ON m.hometeam_id = t.team_api_id 
+) AS home
+ON home.id = m.id
+-- join awayteam
+LEFT JOIN (
+    SELECT m.id,
+       t.team_long_name AS awayteam
+    FROM "match" m 
+    LEFT JOIN team t 
+    ON m.awayteam_id = t.team_api_id
+) AS away
+ON away.id = m.id;
+
+
+-- Get team names with correlated subqueries
+-- Using a correlated subquery in the SELECT statement
+SELECT m.date,
+       (SELECT t.team_long_name
+        FROM team t 
+        WHERE t.team_api_id  = m.hometeam_id
+       ) AS hometeam
+FROM "match" m;
+
+SELECT m.date,
+       (SELECT t.team_long_name
+        FROM team t 
+        WHERE t.team_api_id  = m.hometeam_id
+       ) AS hometeam,
+       --away team
+       (SELECT t.team_long_name
+        FROM team t 
+        WHERE t.team_api_id  = m.awayteam_id
+       ) AS awayteam,
+       m.home_goal,
+       m.away_goal
+FROM "match" m;
+
+
+--- Get team names with CTEs
+WITH home AS (
+   SELECT m.id,
+          m.date,
+          t.team_long_name AS hometeam,
+          m.home_goal
+   FROM "match" m 
+   LEFT JOIN team t
+   ON m.hometeam_id = t.team_api_id
+),
+-- away team
+away AS (
+   SELECT m.id,
+          m.date,
+          t.team_long_name AS awayteam,
+          m.away_goal
+   FROM "match" m
+   LEFT JOIN team t 
+   ON m.awayteam_id = t.team_api_id
+)
+-- main query
+SELECT home.date,
+       home.hometeam,
+       away.awayteam,
+       home.home_goal,
+       away.away_goal
+FROM home
+INNER JOIN away 
+ON home.id = away.id;
 
 
 
